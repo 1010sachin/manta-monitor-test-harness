@@ -30,7 +30,7 @@ public class TestMantaMonitorEndpoint {
         }
 
         final String URL_STRING = args[0];
-        final long appDuration = 30000;
+        final long appDuration = 60000;
         final String outputFilePath = "manta-monitor-metrics.out";
         ScheduledExecutorService ses= Executors.newScheduledThreadPool(1);
         try {

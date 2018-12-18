@@ -8,11 +8,12 @@ Compile and run using the following commands
 $ $JAVA_HOME/bin/javac TestMantaMonitorEndpoint.java
 $ $JAVA_HOME/bin/java TestMantaMonitorEndpoint http://localhost:8090/metrics
 ```
+The application requires one parameter to run, i.e. the complete URL of the manta-monitor endpoint such as 'http://<ip-address:port>/metrics'.
 
 The app will run for 1 minute during which it will perform the following checks multiple times:
 1. Check if the provided endpoint can be reached.
 2. Check if the all the expected metrics are exposed.
-3. Check if all the count metrics are getting incremented.
+3. Check if all the 'requests' count metrics are getting incremented.
 
 The output will look like:
 ```
