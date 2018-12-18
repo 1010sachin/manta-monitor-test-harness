@@ -778,5 +778,3 @@ Request-Delete count increased by: 42. Last count was 2707465 and current count 
 
 Process finished with exit code 0
 ```
-
-The app will also write the metrics keys to manta-monitor-metrics.out.
