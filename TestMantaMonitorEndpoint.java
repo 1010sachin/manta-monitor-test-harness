@@ -1,8 +1,16 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.HashSet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +30,7 @@ public class TestMantaMonitorEndpoint {
         }
 
         final String URL_STRING = args[0];
-        final long appDuration = 60000;
+        final long appDuration = 30000;
         final String outputFilePath = "manta-monitor-metrics.out";
         ScheduledExecutorService ses= Executors.newScheduledThreadPool(1);
         try {
