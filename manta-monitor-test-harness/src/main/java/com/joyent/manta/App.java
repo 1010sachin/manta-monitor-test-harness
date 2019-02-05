@@ -54,7 +54,7 @@ public class App {
             System.exit(1);
         }
         URL_STRING = args[0];
-        final long appDuration = 6000;
+        final long appDuration = 60000;
         ScheduledExecutorService ses= Executors.newScheduledThreadPool(1);
         try {
             URL url = new URL(URL_STRING);

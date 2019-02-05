@@ -1,12 +1,19 @@
 # manta-monitor-test-harness
 Test and validate manta-monitor endpoint and its metrics
 
-To run this application you need [Java 1.8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+To build and run this application you need 
+* [Java 1.8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [Maven 3.1.x](https://maven.apache.org/)
 
-Compile and run using the following commands
+## Build
+Checkout the project from github then, from command line, go to the project source directory
 ```
-$ $JAVA_HOME/bin/javac TestMantaMonitorEndpoint.java
-$ $JAVA_HOME/bin/java TestMantaMonitorEndpoint http://localhost:8090/metrics
+$ mvn clean install
+```
+## Run
+Go to the project target directory
+```
+$
 ```
 The application requires one parameter to run, i.e. the complete URL of the manta-monitor endpoint such as 'http://<ip-address:port>/metrics'.
 
