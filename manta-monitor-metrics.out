@@ -1,4 +1,3 @@
-manta_monitor_operation_chain_elapsed_time
 requests_delete_50thPercentile
 requests_delete_75thPercentile
 requests_delete_95thPercentile
