@@ -3,6 +3,7 @@
 *.iml
 *.class
 *.properties
+*.releaseBackup
 
 ## Directory-based project format:
 .idea/
