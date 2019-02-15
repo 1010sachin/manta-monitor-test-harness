@@ -286,7 +286,7 @@ public class App {
 
     private static void checkGetRequestMetrics(HashMap<String, Double> metrics) {
         Set<String> getMetricSet = collectRequestMetricsSet(metrics.keySet(), "get");
-        if (getMetricSet.size() == 6) {
+        if (getMetricSet.size() == 9) {
             StringBuilder getMetrics = new StringBuilder("Found all the Requests-Get metrics");
             getMetrics.append(System.lineSeparator());
             for (String metric : getMetricSet) {
@@ -295,14 +295,14 @@ public class App {
             System.out.println(getMetrics);
         } else {
             String message = String.format("Expected %d metrics for Requests-Get but found %d",
-                    6, getMetricSet.size());
+                    9, getMetricSet.size());
             System.err.println(message);
         }
     }
 
     private static void checkDeleteRequestMetrics(HashMap<String, Double> metrics) {
         Set<String> deleteMetricSet = collectRequestMetricsSet(metrics.keySet(), "delete");
-        if (deleteMetricSet.size() == 6) {
+        if (deleteMetricSet.size() == 9) {
             StringBuilder deleteMetrics = new StringBuilder("Found all the Requests-Delete metrics");
             deleteMetrics.append(System.lineSeparator());
             for (String metric : deleteMetricSet) {
@@ -311,14 +311,14 @@ public class App {
             System.out.println(deleteMetrics);
         } else {
             String message = String.format("Expected %d metrics for Requests-Delete but found %d",
-                    6, deleteMetricSet.size());
+                    9, deleteMetricSet.size());
             System.err.println(message);
         }
     }
 
     private static void checkPutRequestMetrics(HashMap<String, Double> metrics) {
-        Set<String> putMetricSet = collectRequestMetricsSet(metrics.keySet(), "put");
-        if (putMetricSet.size() == 6) {
+        Set<String> putMetricSet = collectRequestMetricsSet(metrics.keySet(), "requests_put");
+        if (putMetricSet.size() == 9) {
             StringBuilder putMetrics = new StringBuilder("Found all the Requests-Put metrics");
             putMetrics.append(System.lineSeparator());
             for (String metric : putMetricSet) {
@@ -327,7 +327,7 @@ public class App {
             System.out.println(putMetrics);
         } else {
             String message = String.format("Expected %d metrics for Requests-Put but found %d",
-                    7, putMetricSet.size());
+                    9, putMetricSet.size());
             System.err.println(message);
         }
     }
