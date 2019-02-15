@@ -2,10 +2,10 @@
 
 *.iml
 *.class
+*.properties
 
 ## Directory-based project format:
 .idea/
 
 out/
 target/
-
