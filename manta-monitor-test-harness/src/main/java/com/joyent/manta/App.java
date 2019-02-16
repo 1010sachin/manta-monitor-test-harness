@@ -2,6 +2,7 @@ package com.joyent.manta;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.BufferedWriter;
@@ -32,6 +33,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
@@ -131,12 +133,22 @@ public class App {
                     System.err.println(error);
                     System.exit(1);
                 }
+            } else {
+                String message = String.format("Response from server is %s.",
+                        EntityUtils.toString(response.getEntity(), "utf-8"));
+                System.err.println(message);
+                System.exit(1);
             }
-        }
-        catch(IOException io) {
+        } catch(HttpHostConnectException | SSLHandshakeException hhc) {
+            String message = String.format("Failed to connect to the end-point %s. " +
+                            "Server response: %s", URL_STRING, hhc.getMessage());
+            System.err.println(message);
+            System.exit(1);
+        } catch(IOException io) {
             String message = String.format("Failed to add the https response to metrics map "
             + "in order to write the metrics to file %s", OUTPUT_FILE_PATH);
-            throw new RuntimeException(message, io);
+            System.err.println(message);
+            System.exit(1);
         }
     }
 
