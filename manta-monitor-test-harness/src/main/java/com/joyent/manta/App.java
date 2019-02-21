@@ -125,7 +125,9 @@ public class App {
                     checkGetRequestMetrics(metrics);
                     checkDeleteRequestMetrics(metrics);
                     checkPutRequestMetrics(metrics);
+                    checkPutRequestLatencyMetrics(metrics);
                     checkRetriesMetrics(metrics);
+                    checkExceptionsMetrics(metrics);
                     checkRequestCounters(metrics);
                     System.out.println(System.lineSeparator());
                 } else {
@@ -175,6 +177,8 @@ public class App {
                 checkDeleteRequestMetrics(metrics);
                 checkPutRequestMetrics(metrics);
                 checkRetriesMetrics(metrics);
+                checkPutRequestLatencyMetrics(metrics);
+                checkExceptionsMetrics(metrics);
                 checkRequestCounters(metrics);
                 System.out.println(System.lineSeparator());
             } else {
@@ -270,7 +274,8 @@ public class App {
             if (!readLine.startsWith("#") &&
                     (readLine.startsWith("requests")
                             || readLine.startsWith("retries")
-                            || readLine.startsWith("manta"))) {
+                            || readLine.startsWith("manta")
+                            || readLine.startsWith("exceptions"))) {
                 String[] metric = readLine.split(" ");
                 metrics.put(metric[0], Double.parseDouble(metric[1]));
             }
@@ -279,7 +284,7 @@ public class App {
         return metrics;
     }
 
-    private static void addMetricsToFile(Set<String> metricsKeySet, String outputFilePath) throws IOException{
+    private static void addMetricsToFile(Set<String> metricsKeySet, String outputFilePath) throws IOException {
         if (outputFilePath.isEmpty()) {
             String message = String.format("Path %s to write the manta-monitor-metrics-file cannot be empty",
                     outputFilePath);
@@ -297,7 +302,7 @@ public class App {
     }
 
     private static void checkGetRequestMetrics(HashMap<String, Double> metrics) {
-        Set<String> getMetricSet = collectRequestMetricsSet(metrics.keySet(), "get");
+        Set<String> getMetricSet = collectRequestMetricsSet(metrics.keySet(), "requests_get");
         if (getMetricSet.size() == 9) {
             StringBuilder getMetrics = new StringBuilder("Found all the Requests-Get metrics");
             getMetrics.append(System.lineSeparator());
@@ -313,7 +318,8 @@ public class App {
     }
 
     private static void checkDeleteRequestMetrics(HashMap<String, Double> metrics) {
-        Set<String> deleteMetricSet = collectRequestMetricsSet(metrics.keySet(), "delete");
+        Set<String> deleteMetricSet = collectRequestMetricsSet(metrics.keySet(),
+                "requests_delete");
         if (deleteMetricSet.size() == 9) {
             StringBuilder deleteMetrics = new StringBuilder("Found all the Requests-Delete metrics");
             deleteMetrics.append(System.lineSeparator());
@@ -329,7 +335,8 @@ public class App {
     }
 
     private static void checkPutRequestMetrics(HashMap<String, Double> metrics) {
-        Set<String> putMetricSet = collectRequestMetricsSet(metrics.keySet(), "requests_put");
+        Set<String> putMetricSet = collectRequestMetricsSet(metrics.keySet(),
+                "requests_put");
         if (putMetricSet.size() == 9) {
             StringBuilder putMetrics = new StringBuilder("Found all the Requests-Put metrics");
             putMetrics.append(System.lineSeparator());
@@ -345,7 +352,8 @@ public class App {
     }
 
     private static void checkRetriesMetrics(HashMap<String, Double> metrics) {
-        Set<String> retriesMetricSet = collectRequestMetricsSet(metrics.keySet(), "retries");
+        Set<String> retriesMetricSet = collectRequestMetricsSet(metrics.keySet(),
+                "retries");
         if (retriesMetricSet.size() == 2) {
             StringBuilder putMetrics = new StringBuilder("Found all the Retries metrics");
             putMetrics.append(System.lineSeparator());
@@ -360,10 +368,41 @@ public class App {
         }
     }
 
-    private static Set<String> collectRequestMetricsSet(Set<String> keySet, String requestMethod) {
+    private static void checkPutRequestLatencyMetrics(HashMap<String, Double> metrics) {
+        Set<String> putRequestLatencyMetricSet = collectRequestMetricsSet(metrics.keySet(),
+                "manta_monitor_put_request_latency");
+        if (!putRequestLatencyMetricSet.isEmpty()) {
+            StringBuilder putRequestLatencyMetrics = new StringBuilder("Found Put Request Latency metrics");
+            putRequestLatencyMetrics.append(System.lineSeparator());
+            for (String metric : putRequestLatencyMetricSet) {
+                putRequestLatencyMetrics.append(metric).append(System.lineSeparator());
+            }
+            System.out.println(putRequestLatencyMetrics);
+        } else {
+            System.err.println("Couldn't find any manta_monitor_put_request_latency metric");
+        }
+    }
+
+    private static void checkExceptionsMetrics(HashMap<String, Double> metrics) {
+        Set<String> exceptionsMetricSet = collectRequestMetricsSet(metrics.keySet(),
+                "exceptions");
+        if (!exceptionsMetricSet.isEmpty()) {
+            StringBuilder putRequestLatencyMetrics = new StringBuilder("Found Exceptions metrics");
+            putRequestLatencyMetrics.append(System.lineSeparator());
+            for (String metric : exceptionsMetricSet) {
+                putRequestLatencyMetrics.append(metric).append(System.lineSeparator());
+            }
+            System.out.println(putRequestLatencyMetrics);
+        } else {
+            System.err.println("Couldn't find any exceptions metric");
+        }
+    }
+
+    private static Set<String> collectRequestMetricsSet(Set<String> keySet,
+                                                        String requestMethod) {
         Set<String> requestMetricsSet = new HashSet<>();
         for (String key : keySet) {
-            if (key.contains(requestMethod)) {
+            if (key.startsWith(requestMethod)) {
                 requestMetricsSet.add(key);
             }
         }
@@ -407,7 +446,7 @@ public class App {
                 }
             }
 
-            if (lastDeleteRequestCountValue == 0) {
+            if (lastDeleteRequestCountValue ==  0) {
                 lastDeleteRequestCountValue = metrics.get("requests_delete_count");
                 System.out.println("Start Request-Delete count is: "
                         + Math.round(lastDeleteRequestCountValue));
@@ -427,6 +466,6 @@ public class App {
         } else {
             throw new RuntimeException("Failed to get the counter value for requests metrics");
         }
-    }
+     }
 
 }
